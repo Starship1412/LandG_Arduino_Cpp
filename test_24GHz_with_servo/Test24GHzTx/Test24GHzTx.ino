@@ -1,17 +1,13 @@
-//Include Libraries
 #include <SPI.h>
 #include <nRF24L01.h>
 #include <RF24.h>
-
 
 //create an RF24 object
 RF24 radio(9, 8); // CE, CSN
 //address through which two modules communicate.
 const byte address[6] = "00001";
 
-
-void setup()
-{
+void setup() {
   radio.begin();
   radio.setPALevel(RF24_PA_LOW);//Transmitter RF Power Setting
   //MIN=-18dBm, LOW=-12dBm, HIGH=-6dBm, MAX=0dBm.
@@ -23,14 +19,10 @@ void setup()
   radio.stopListening();
 }
 
-
-byte c = 1;
-void loop()
-{
+void loop() {
   int sensorValue = analogRead(A0);
   // Convert the analog reading (which goes from 0 - 1023) to an angle (0 - 180°):
   int servoPos = (int)sensorValue * (180.0 / 1023.0);
-
   //Send message to receiver
   String stext = String(servoPos);
   char text[32];
