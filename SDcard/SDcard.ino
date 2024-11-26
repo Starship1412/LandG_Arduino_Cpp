@@ -1,14 +1,16 @@
 /*
-  SD card test for stm32 and SdFat library
-    SD card attached to the primary SPI as follows:
-        MISO  = PB14;
-        MOSI  = PB15;
-        SCK   = PB13;
-        SS    = PB12;
+  SD card attached to the primary SPI as follows:
+      MISO  = PB14;
+      MOSI  = PB15;
+      SCK   = PB13;
+      SS    = PB12;
 */
 #include <SPI.h>
 #include <SD.h>
-
+// #define arduino
+// #ifdef arduino
+//   #define pinToConnect 10
+// #endif
 const int chipSelect = 10;
 
 // #define SD_CS_PIN       PB12
@@ -17,6 +19,7 @@ const int chipSelect = 10;
 
 File myFile;
 
+String FileName = "TEST2.TXT";
 void setup() {
   Serial.begin(9600);
   while (!Serial);
@@ -36,50 +39,50 @@ void setup() {
 
   Serial.println("initialization done.");
 
-  if (SD.exists("TEST.TXT")) {
-    Serial.println("TEST.TXT already exists.");
+  if (SD.exists(FileName)) {
+    Serial.println("FileName already exists.");
   } else {
-    Serial.println("TEST.TXT does not exist, creating a new one.");
+    Serial.println("FileName does not exist, creating a new one.");
   }
 
-  myFile = SD.open("TEST.TXT", FILE_WRITE);
+  myFile = SD.open(FileName, FILE_WRITE);
   if (myFile) {
-    Serial.println("Writing to TEST.TXT...");
+    Serial.println("Writing to FileName...");
     myFile.println("testing 1, 2, 3.");
     myFile.close();
     Serial.println("done.");
   } else {
-    Serial.println("error opening TEST.TXT");
+    Serial.println("error opening FileName");
   }
 
-  myFile = SD.open("TEST.TXT", O_RDONLY);
+  myFile = SD.open(FileName, O_RDONLY);
   if (myFile) {
-    Serial.println("Read TEST.TXT:");
+    Serial.println("Read FileName:");
     while (myFile.available()) {
       Serial.write(myFile.read());
     }
     myFile.close();
   } else {
-    Serial.println("error opening TEST.TXT");
+    Serial.println("error opening FileName");
   }
 
-  if (SD.exists("TEST.TXT")) {
-    Serial.println("TEST.TXT exists.");
+  if (SD.exists(FileName)) {
+    Serial.println("FileName exists.");
   } else {
-    Serial.println("TEST.TXT does not exist.");
+    Serial.println("FileName does not exist.");
   }
 }
 
 void loop() {
     if (Serial.available() > 0) {
         String inputString = Serial.readStringUntil('\n');
-        myFile = SD.open("TEST.TXT", FILE_WRITE);
+        myFile = SD.open(FileName, FILE_WRITE);
         if (myFile) {
             myFile.println(inputString);
             myFile.close();
             Serial.println("Write successful.");
         } else {
-            Serial.println("Error opening TEST.TXT for writing.");
+            Serial.println("Error opening FileName for writing.");
         }
     }
 }

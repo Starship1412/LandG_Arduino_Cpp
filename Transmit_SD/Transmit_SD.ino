@@ -1,11 +1,12 @@
+uint64_t counter = 0;
+
 void setup() {
   Serial.begin(9600);
   Serial.println("Try to transmit numbers.");
+  counter = 0;
 }
 
 void loop() {
-  static uint64_t counter = 0;
-
   uint64_t part1 = (counter / 1000000000000ULL) % 10000;
   uint64_t part2 = (counter / 100000000ULL) % 10000;
   uint64_t part3 = (counter / 10000ULL) % 10000;
@@ -21,7 +22,6 @@ void loop() {
   Serial.println();
 
   counter++;
-
   delay(20); // 50Hz
 }
 
